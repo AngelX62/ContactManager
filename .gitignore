@@ -1,0 +1,15 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+# Ignore IDE settings
+.idea/
+venv/
+
+# Custom files to ignore
+ModuleSixAssignment.py
+NameAge.py
+TextBasedGame.py
+
+# Ignore entire Numpy Directory
+Numpy/
