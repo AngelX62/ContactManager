@@ -7,10 +7,11 @@
 venv/
 
 # Custom files to ignore
-ModuleSixAssignment.py
-NameAge.py
-TextBasedGame.py
+Practice/ModuleSixAssignment.py
+Practice/NameAge.py
+Practice/TextBasedGame.py
 scratch.py
 
-# Ignore entire Numpy Directory
+# Ignore entire Named Directory
 Numpy/
+Practice/
