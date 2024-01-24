@@ -10,6 +10,7 @@ venv/
 ModuleSixAssignment.py
 NameAge.py
 TextBasedGame.py
+scratch.py
 
 # Ignore entire Numpy Directory
 Numpy/
