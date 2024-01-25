@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from tkinter import messagebox
 from contact_manager import ContactManage, Contacts
@@ -40,7 +41,8 @@ class ContactGUI:
         # Used for managing contacts
         self.manage = ContactManage()
         self.root = tk.Tk()
-
+        # Set window icon
+        self.window_icon('Images/contact_icon.ico')
         self.root.title("Contact Management System")
         # User cannot change dimension of tk() window
         self.root.resizable(width=False, height=False)
@@ -50,6 +52,13 @@ class ContactGUI:
         self.root.protocol("WM_DELETE_WINDOW", self.exit)
         self.root.configure(background='cyan')
         self.root.mainloop()
+
+    def window_icon(self, icon_file):
+        try:
+            path = os.path.join(os.path.dirname(__file__), icon_file)
+            self.root.iconbitmap(path)
+        except Exception as e:
+            print(f"Error setting window icon: {e}")
 
     def layout_setup(self):
         # Call function and display app in the center
@@ -106,7 +115,7 @@ class ContactGUI:
         self.button_frame.pack(fill='x', padx=10, pady=10)
 
         # Create a listbox to display contacts for modifying
-        self.contacts_listbox = tk.Listbox(self.root, font=('Arial', 10), background='gray', borderwidth=5) # Fix me
+        self.contacts_listbox = tk.Listbox(self.root, font=('Arial', 10), background='light gray', borderwidth=5)
         self.contacts_listbox.pack(side='left', fill='both', expand=True)
         self.contacts_listbox.bind("<<ListboxSelect>>", self.on_contact_select)
 
@@ -132,9 +141,10 @@ class ContactGUI:
 
     def add_contact(self):
         name, email = self.name_entry.get(), self.email_entry.get()
-
+        # Name and email is filled
         if name and email:
-            if not self.manage.is_duplicate(name):
+            # Check for duplicate and contain '@' in email
+            if not self.manage.is_duplicate(name) and '@' in email:
                 self.manage.contacts[name] = Contacts(name, email)
 
                 messagebox.showinfo("Success", f"{name} and {email} added successfully")
@@ -147,7 +157,7 @@ class ContactGUI:
                 self.name_entry.delete(0, 'end')
 
             else:
-                messagebox.showwarning("Warning", "Contact already exists")
+                messagebox.showwarning("Warning", "Contact already exists/Email not valid")
 
         else:
             messagebox.showerror("Error", "Name or email cannot be empty")
@@ -213,7 +223,7 @@ class ContactGUI:
 
     def load_contact_details(self, contact_name):
         # Retrieve contact details
-        contact = self.manage.contacts.get(contact_name.strip(" ")) # Fix Me: Strip
+        contact = self.manage.contacts.get(contact_name.strip(" "))  # Fix Me: Strip
         if contact:
             # Load the contact details into entry fields
             self.name_entry.delete(0, tk.END)
@@ -234,12 +244,18 @@ class ContactGUI:
         contact_name = self.contacts_listbox.get(selected_index)
         if messagebox.askyesno("Confirm deletion", f"Are you sure you want to delete {contact_name.split(' - ')[0]}"):
             contact_name = contact_name.split(' - ')[0]
+
             if contact_name.strip(" ") in self.manage.contacts:
                 del self.manage.contacts[contact_name.strip(" ")]
-
+                # Deletes name and email entry after deletion
+                self.name_entry.delete(0, tk.END)
+                self.email_entry.delete(0, tk.END)
+                # Save
                 self.manage.save_to_json()
+                # Load to UI
                 self.load_contacts_listbox_ui()
                 messagebox.showinfo("Success", "Contact deleted successfully")
+
             else:
                 messagebox.showerror("Error", "Contact does not exist")
 
