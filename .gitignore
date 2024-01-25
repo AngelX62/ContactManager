@@ -9,7 +9,7 @@ venv/
 # Custom files to ignore
 Practice/ModuleSixAssignment.py
 Practice/NameAge.py
-Practice/TextBasedGame.py
+TextBasedGame.py
 scratch.py
 
 # Ignore entire Named Directory
