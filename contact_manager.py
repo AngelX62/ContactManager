@@ -1,14 +1,5 @@
 import json
 
-"""
-Label for displaying text.
-Entry for user input.
-Button for actions.
-Listbox or Text for displaying a list or multi-line text.
-Frame for grouping related widgets.
-
-"""
-
 
 class Contacts:
     # Constructor method and initialize instance emails
