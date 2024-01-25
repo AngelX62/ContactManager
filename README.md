@@ -1,6 +1,6 @@
 #  📘 Contact Management System
 
-![img.png](img.png)
+![img_1.png](img_1.png)
 
 # Description:
 This Contact Management System is a Python application designed to store, retrieve, and manage contacts.
