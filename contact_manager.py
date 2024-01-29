@@ -161,7 +161,7 @@ class ContactManage:
 
     def edit_email(self, name):
         new_email = input("Enter the new email:")
-
+        # Check email input
         if new_email.__contains__("@"):
             self.contacts[name].email = new_email
             print(f"{name}'s email has been changed to {new_email}")
