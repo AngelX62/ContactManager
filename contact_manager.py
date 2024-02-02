@@ -31,6 +31,7 @@ class ContactManage:
     # Initialize ContactManage with empty contacts dictionary and load contacts from JSON
     def __init__(self):
         self.contacts = {}
+
         self.load_from_json()
 
     # Determine if given name already exists in the list
@@ -114,27 +115,27 @@ class ContactManage:
         # Runs view_contacts method
         self.view_contacts()
 
-        try:
-            modify_name = input("Enter the contact name you want to modify:\n").capitalize()
-            if modify_name in self.contacts:
-                # contacts_key = list(sorted(self.contacts))
+        modify_name = input("Enter the contact name you want to modify:\n").capitalize()
+        # Define actions
+        actions = {1: lambda: self.delete_contacts(modify_name),
+                   2: lambda: self.edit_name(modify_name),
+                   3: lambda: self.edit_email(modify_name)}
+
+        if modify_name in self.contacts:
+            try:
+                # Prompts user
                 remove_options = int(input("Select the choices:\n"
                                            "1. Delete contact\n"
                                            "2. Edit contact name\n"
                                            "3. Edit contact email\n"))
 
-                if remove_options == 1:
-                    self.delete_contacts(modify_name)
-                elif remove_options == 2:
-                    self.edit_name(modify_name)
-                elif remove_options == 3:
-                    self.edit_email(modify_name)
+                if remove_options in actions:
+                    actions[remove_options]()
                 else:
-                    print("Invalid option, try again")
-            else:
-                print("Invalid Contact name")
-        except ValueError:
-            print("Please enter a number")
+                    print("Invalid option, please choose a valid action.")
+
+            except ValueError:
+                print("Please enter a number for your choice.")
 
     def delete_contacts(self, name):
         # self.contacts.pop(name)
@@ -145,19 +146,18 @@ class ContactManage:
     def edit_name(self, name):
         new_name = input("Enter the new name:").capitalize()
 
-        while True:
-            if new_name in self.contacts and new_name == name:
-                print("The name already exist, type a different name")
-                new_name = input().capitalize()
+        while new_name in self.contacts and new_name != name:
+            print("The name already exist, type a different name")
+            new_name = input().capitalize()
+
+        if new_name != name:
             # Rename contact: Remove old name entry and reassign email to the new name
             contact = self.contacts.pop(name)
             # Update name email of the contacts object
             contact.name = new_name
             self.contacts[new_name] = contact
             print(f"You have changed the name to {new_name}")
-
             self.save_to_json()
-            break
 
     def edit_email(self, name):
         new_email = input("Enter the new email:")
@@ -168,4 +168,3 @@ class ContactManage:
             self.save_to_json()
         else:
             print("It must be an email")
-
