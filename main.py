@@ -1,42 +1,43 @@
-
-import contact_manager
 from contactGUI import ContactGUI
-from contact_manager import ContactManage
+from contact_manager import ContactManage, exit_program
 
 
-def main():
-    mode = input("Choose mode: (text/gui)\n")
+class Main:
 
-    if mode == "text":
+    def __init__(self):
         # Instantiation to create an instance and access as method objects
-        manage = ContactManage()
-        replay = True
-        while replay:
-            try:
-                menu = int(input("Menu: \n "
-                                 "1) Add contact \n "
-                                 "2) View contacts \n "
-                                 "3) Modify contacts \n "
-                                 "4) Exit\n".upper()))
-            except ValueError:
-                print("It must be a number")
-                continue
-            # Menu selection
-            if menu == 1:
-                manage.add_contact()
-            elif menu == 2:
-                manage.view_contacts()
-            elif menu == 3:
-                manage.modify_contacts()
-            elif menu == 4:
-                ex = contact_manager.exit_program()
-                ex()
-                break
-    elif mode == "gui":
-        ContactGUI()
-    else:
-        print("Invalid choice")
+        self.manage = ContactManage()
+
+    def menu(self):
+        mode = input("Choose mode: (text/gui)\n").lower()
+
+        if mode == "text":
+            while True:
+                try:
+                    options = int(input("Menu: \n "
+                                        "1) Add contact \n "
+                                        "2) View contacts \n "
+                                        "3) Modify contacts \n "
+                                        "4) Exit\n".upper()))
+                except ValueError:
+                    print("It must be a number")
+                    continue
+                # Menu selection
+                if options == 1:
+                    self.manage.add_contact()
+                elif options == 2:
+                    self.manage.view_contacts()
+                elif options == 3:
+                    self.manage.modify_contacts()
+                elif options == 4:
+                    exit_program()
+                    break
+        elif mode == "gui":
+            ContactGUI()
+        else:
+            print("Invalid choice")
 
 
 if __name__ == "__main__":
-    main()
+    main = Main()
+    main.menu()
